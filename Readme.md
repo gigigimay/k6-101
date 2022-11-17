@@ -1,7 +1,7 @@
 ## Usage
 
 ```sh
-k6 run FILE_NAME
+k6 run $FILE_PATH
 ```
 
 ## References
