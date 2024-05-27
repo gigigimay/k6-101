@@ -1,25 +1,19 @@
 import http from "k6/http";
 import { check, group } from "k6";
+import env from "./env.js";
 
 export let options = {
   maxRedirects: 4,
 };
 
-// --- local ---
-// const baseUrl = "https://e4ef-161-82-160-194.ngrok-free.app";
-// const apiKey = "NDcxODViMTItYTRmNC00NWY0LTkwYmItNzFkMzYzNzRlZjM0";
-
-// --- qa ---
-const baseUrl =
-  "https://portal-qa.mac-non-prod.appmanteam.com/api/v1/background-check";
-const apiKey = "NDE2ZjNhYzMtYzlhYy00YWYwLWI1MjQtZjE3ZDkwYzMzOTU0";
+const { backgroundCheckBaseUrl, backgroundCheckApiKey } = env;
 
 const headers = {
-  Authorization: `Bearer ${apiKey}`,
+  Authorization: `Bearer ${backgroundCheckApiKey}`,
 };
 
 const jsonHeaders = {
-  Authorization: `Bearer ${apiKey}`,
+  Authorization: `Bearer ${backgroundCheckApiKey}`,
   "Content-Type": "application/json",
 };
 
@@ -46,7 +40,7 @@ export default function() {
   // Group the requests for better organization and readability
   group("Create Background Check", () => {
     const createRes = http.post(
-      `${baseUrl}/backgroundChecks`,
+      `${backgroundCheckBaseUrl}/backgroundChecks`,
       JSON.stringify({
         processConfigs: {
           criminalRecord: true,
@@ -90,7 +84,7 @@ export default function() {
 
   group("Patch KYC Result", () => {
     const patchKycRes = http.patch(
-      `${baseUrl}/backgroundChecks/${backgroundCheckId}`,
+      `${backgroundCheckBaseUrl}/backgroundChecks/${backgroundCheckId}`,
       {
         frontIdCardImage: frontIdCardImage,
         idCardFaceImage: frontIdcardFaceimage,
@@ -104,7 +98,7 @@ export default function() {
 
   group("Get Background Check by ID", () => {
     const getRes = http.get(
-      `${baseUrl}/backgroundChecks/${backgroundCheckId}`,
+      `${backgroundCheckBaseUrl}/backgroundChecks/${backgroundCheckId}`,
       { headers }
     );
 
@@ -115,7 +109,7 @@ export default function() {
 
   group("Upload ID Card Selfie Image", () => {
     const uploadSelfieRes = http.put(
-      `${baseUrl}/backgroundChecks/${backgroundCheckId}/criminalRecords`,
+      `${backgroundCheckBaseUrl}/backgroundChecks/${backgroundCheckId}/criminalRecords`,
       { idCardSelfieImage: idCardSelfieImage },
       { headers }
     );
@@ -129,7 +123,7 @@ export default function() {
 
   group("Add Additional Info", () => {
     const addInfoRes = http.put(
-      `${baseUrl}/backgroundChecks/${backgroundCheckId}/criminalRecords`,
+      `${backgroundCheckBaseUrl}/backgroundChecks/${backgroundCheckId}/criminalRecords`,
       JSON.stringify({
         additionalInfo: {
           fatherTitle: "นาย",
@@ -162,7 +156,7 @@ export default function() {
 
   group("Upload Signature Image", () => {
     const uploadSignatureRes = http.put(
-      `${baseUrl}/backgroundChecks/${backgroundCheckId}/criminalRecords`,
+      `${backgroundCheckBaseUrl}/backgroundChecks/${backgroundCheckId}/criminalRecords`,
       { file: signatureImage },
       { headers }
     );
@@ -176,7 +170,7 @@ export default function() {
 
   group("Upload Social Security History Signature Image", () => {
     const uploadSocialSignatureRes = http.put(
-      `${baseUrl}/backgroundChecks/${backgroundCheckId}/socialSecurityHistories`,
+      `${backgroundCheckBaseUrl}/backgroundChecks/${backgroundCheckId}/socialSecurityHistories`,
       { file: signatureImage },
       { headers }
     );
@@ -190,7 +184,7 @@ export default function() {
 
   group("Patch Criminal Record Client Submitted", () => {
     const patchCriminalRes = http.patch(
-      `${baseUrl}/backgroundChecks/${backgroundCheckId}/criminalRecords`,
+      `${backgroundCheckBaseUrl}/backgroundChecks/${backgroundCheckId}/criminalRecords`,
       JSON.stringify({
         clientSubmitted: true,
       }),
@@ -204,7 +198,7 @@ export default function() {
 
   group("Patch Social Security History Client Submitted", () => {
     const patchSocialRes = http.patch(
-      `${baseUrl}/backgroundChecks/${backgroundCheckId}/socialSecurityHistories`,
+      `${backgroundCheckBaseUrl}/backgroundChecks/${backgroundCheckId}/socialSecurityHistories`,
       JSON.stringify({
         clientSubmitted: true,
       }),
