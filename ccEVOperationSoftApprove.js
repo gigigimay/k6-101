@@ -4,7 +4,9 @@ import { check, group } from "k6";
 import env from "./env.js";
 
 export let options = {
-  maxRedirects: 4,
+  iterations: 802,
+  vus: 1,
+  duration: "30m",
 };
 
 const {
@@ -95,6 +97,7 @@ export default function () {
 
   group("Patch operationStatus softApproved", () => {
     const item = cachedIds.pop();
+    console.log("🚀 ~ item:", item);
     if (!item) return;
 
     const patchPayload = JSON.stringify({ operationStatus: "softApproved" });

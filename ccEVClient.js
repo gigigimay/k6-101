@@ -3,7 +3,9 @@ import { check, group } from "k6";
 import env from "./env.js";
 
 export let options = {
-  maxRedirects: 4,
+  iterations: 1,
+  vus: 1,
+  duration: "30m",
 };
 
 const { backgroundCheckBaseUrl, backgroundCheckApiKey } = env;
@@ -34,7 +36,7 @@ const frontIdcardFaceimage = httpFile("frontidcardfaceimage.png");
 const signatureImage = httpFile("signature1.png");
 const idCardSelfieImage = httpFile("idcardselfieimage.png");
 
-export default function() {
+export default function () {
   let backgroundCheckId = "";
 
   // Group the requests for better organization and readability
@@ -52,10 +54,10 @@ export default function() {
         verificationInfo: {
           kycVerified: true,
           kycCompletedAt: new Date().toISOString(),
-          citizenId: "1111111111119",
+          citizenId: "11111111118",
           titleTH: "น.ส.",
-          firstNameTH: "เม",
-          lastNameTH: "เทสข้อมูลเยอะๆ",
+          firstNameTH: "เทสแปด",
+          lastNameTH: "ค้าบ",
           titleEN: "Miss",
           firstNameEN: "May",
           lastNameEN: "Mon",
